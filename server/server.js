@@ -8,7 +8,7 @@ var server = http.createServer(app);
 var io = socketIO(server);
 
 const port = process.env.PORT || 3000;
-const {generateMessage} = require('./utils/message');
+const {generateMessage,generateLocationMessage} = require('./utils/message');
 
 var publicPath = path.join(__dirname, '/../public');
 
@@ -35,12 +35,9 @@ io.on('connection', (socket) => {
         //     createdAt: new Date().getTime()
         // });
     });
-
-    // socket.emit('newMessage',{
-    //     from:'fag',
-    //     text:'sup fag',
-    //     createdAt:213
-    // });
+    socket.on('createLocationMessage', (coords) => {
+        io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
+    });
 
     socket.on('disconnect' , () => {
             console.log('User disconnected');
