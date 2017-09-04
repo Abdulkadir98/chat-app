@@ -3,11 +3,22 @@ const express = require('express');
 const http  = require('http');
 const socketIO = require('socket.io');
 var app = express();
+const _ = require('lodash');
+var bodyParser = require('body-parser');
+var expressValidator = require('express-validator');
+
+var {ObjectID} = require('mongodb');
+
+
+
+
 
 var server = http.createServer(app);
 var io = socketIO(server);
 
-const {User} = require('./utils/users');
+var {mongoose} = require('./db/mongoose');
+var {User} = require('./models/user');
+const {Users} = require('./utils/users');
 const port = process.env.PORT || 3000;
 const {generateMessage,generateLocationMessage} = require('./utils/message');
 const {isRealString} = require('./utils/validation');
@@ -15,8 +26,36 @@ const {isRealString} = require('./utils/validation');
 var publicPath = path.join(__dirname, '/../public');
 
 
-var users = new User();
+var users = new Users();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(expressValidator()); // Add this after the bodyParser middlewares!
+
 app.use(express.static(publicPath));
+
+app.post('/users',(req,res) => {
+
+    req.checkBody('email', 'valid email is required').isEmail();
+    req.checkBody('password', 'must be six characters long').isLength({min:5});
+
+    var errors = req.validationErrors();
+
+    var body = _.pick(req.body, ['email', 'password']);
+    var user = new User(body);
+
+    if(errors){
+        res.send({errors});
+    }
+    else{
+        user.save().then((user) => {
+        //res.send(user);
+        res.status(200);
+        res.redirect('/join-chat.html');
+    }, (e) => {
+        res.status(400).send(e);
+    });
+    }
+});
 
 io.on('connection', (socket) => {
     console.log('New user connected');
