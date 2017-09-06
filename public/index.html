@@ -1,34 +1,41 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
-<html>
+<html >
 <head>
-    <meta charset="utf-8">
-    <title>Join  |  ChatApp</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+  <meta charset="UTF-8">
+  <title>Material design sign up form</title>
+
+
+
+      <link rel="stylesheet" href="css/signup-styles.css">
+
+
 </head>
-<body class="centered-form">
-    <div class="centered-form__form">
-    <form action="/chat.html">
-        <div class="form-field">
-            <h3>Join a Chat</h3>
-        </div>
-        <div class="form-field">
-            <label>Display name</label>
-            <input type="text" name="name">
-        </div>
-        <div class="form-field">
-            <label>Room name</label>
-            <input type="text" name="room">
-        </div>
-        <div class="form-field">
-            <button>Join</button>
-        </div>
+
+<body>
+  <div id="login-box">
+  <div class="left">
+    <h1>Sign up</h1>
+    <form action="/users" method="post">
+      <input type="text" name="username" placeholder="Username" />
+    <input type="text" name="email" placeholder="E-mail" />
+    <input type="password" name="password" placeholder="Password" />
+    <input type="password" name="password2" placeholder="Retype password" />
+
+    <input type="submit" name="signup_submit" value="Sign me up" />
+  </div>
+
     </form>
 
+  <div class="right">
+    <span class="loginwith">Sign in with<br />social network</span>
 
-
+    <button class="social-signin facebook">Log in with facebook</button>
+    <button class="social-signin twitter">Log in with Twitter</button>
+    <button class="social-signin google">Log in with Google+</button>
+  </div>
+  <div class="or">OR</div>
 </div>
+
 
 </body>
 </html>
